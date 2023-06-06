@@ -1,17 +1,9 @@
 
 import './style.css';
-
-
-interface Clientes {
-  nombre: string;
-  apellido: string;
-  edad: number;
-  email: string;
-  Empresa: string;
-}
+import { iclientes } from './Clientes/InterfacesCliente';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <h1>Hola Cintia</h1>
+  <h1>Bienvenido</h1>
 `;
 
 const app = document.querySelector<HTMLDivElement>('#app');
@@ -24,6 +16,7 @@ home?.addEventListener('click', () => {
 	
 	app!.classList.add('animate__animated');
 	app!.classList.add('animate__bounce');
+
 	// TODO: optimizar
 	
 });
@@ -55,14 +48,26 @@ crearClientes?.addEventListener('click', () => {
 	  <label for="apellido">Apellido:</label>
 	  <input type="text" id="apellido" name="apellido" required>
 	  <br><br/>
-	  <label for="edad">Edad:</label>
-	  <input type="number" id="edad" name="edad" required>
+	  <label for="telefono">Telefono:</label>
+	  <input type="number" id="telefono" name="telefono" required>
 	  <br><br/>
 	  <label for="email">Email:</label>
 	  <input type="email" id="email" name="email" required>
 	  <br><br/>
 	  <label for="empresa">Empresa:</label>
 	  <input type="text" id="empresa" name="empresa" required>
+	  <br><br/>
+	  <label for="cuit">CUIT:</label>
+	  <input type="text" id="cuit" name="cuit" required>
+	  <br><br/>
+	  <label for="direccion">Direccion:</label>
+	  <input type="text" id="direccion" name="direccion" required>
+	  <br><br/>
+	  <label for="localidad">Localidad:</label>
+	  <input type="text" id="localidad" name="localidad" required>
+	  <br><br/>
+	  <label for="pais">Pais:</label>
+	  <input type="text" id="pais" name="pais" required>
 	  <br><br/>
 	  <button type="submit">Crear</button>
 	</form>
@@ -72,10 +77,120 @@ crearClientes?.addEventListener('click', () => {
 	clientes!.classList.remove('active');
 	crearClientes!.classList.add('active');
 	//const cliente _ cargarValores()
+
+	const form = document.querySelector('#crearClienteForm');
+form?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  //  elementos de entrada
+  const nombreInput = document.querySelector<HTMLInputElement>('#nombre');
+  const apellidoInput = document.querySelector<HTMLInputElement>('#apellido');
+  const telefonoInput = document.querySelector<HTMLInputElement>('#telefono');
+  const emailInput = document.querySelector<HTMLInputElement>('#email');
+  const empresaInput = document.querySelector<HTMLInputElement>('#empresa');
+  const cuitInput = document.querySelector<HTMLInputElement>('#cuit');
+  const direccionInput = document.querySelector<HTMLInputElement>('#direccion');
+  const localidadInput = document.querySelector<HTMLInputElement>('#localidad');
+  const paisInput = document.querySelector<HTMLInputElement>('#pais');
+
+  // Verificar la validez de cada campo
+  if (nombreInput && apellidoInput && telefonoInput && emailInput && empresaInput && cuitInput && direccionInput && localidadInput && paisInput) {
+    if (!nombreInput.checkValidity()) {
+      // El campo nombre no es válido
+      
+      return;
+    }
+    if (!apellidoInput.checkValidity()) {
+      // El campo apellido no es válido
+      
+      return;
+    }
+    if (!telefonoInput.checkValidity()) {
+      // El campo telefono no es válido
+      
+      return;
+    }
+    if (!emailInput.checkValidity()) {
+      // El campo email no es válido
+     
+      return;
+    }
+    if (!empresaInput.checkValidity()) {
+      // El campo empresa no es válido
+      
+      return;
+    }
+    if (!cuitInput.checkValidity()) {
+      // El campo cuit no es válido
+      
+      return;
+    }
+    if (!direccionInput.checkValidity()) {
+    
+      return;
+    }
+    if (!localidadInput.checkValidity()) {
+      
+      return;
+    }
+    if (!paisInput.checkValidity()) {
+      
+      return;
+    }
+
+    // Validación específica para el campo de teléfono
+    const telefonoValue = telefonoInput.value;
+    if (telefonoValue.length < 8 || telefonoValue.length > 18) {
+      // El campo telefono no cumple con los requisitos
+      // Realiza la lógica de manejo de error o muestra un mensaje al usuario
+      return;
+    }
+
+    // Hace el envío del formulario
+    const nombre = nombreInput.value;
+    const apellido = apellidoInput.value;
+    const telefono = telefonoInput.valueAsNumber;
+    const email = emailInput.value;
+    const empresa = empresaInput.value;
+    const cuit = cuitInput.valueAsNumber;
+    const direccion = direccionInput.value;
+    const localidad = localidadInput.value;
+    const pais = paisInput.value;
+
+// Agregar el cliente al array
+const nuevoCliente: iclientes = {
+  nombre,
+  apellido,
+  telefono,
+  email,
+  empresa,
+  cuit,
+  direccion,
+  localidad,
+  pais,
+};
+
+// aca se puede realizar alguna acción con el cliente, como enviarlo al servidor o mostrarlo en la consola
+console.log(nuevoCliente);
+// tambien se puede agregar el cliente a una lista de clientes cargados y mostrarla en la sección de clientes
+
+// mostrar los clientes cargados en la sección de clientes
+const clientesSection = document.querySelector<HTMLDivElement>('#clientes-section');
+if (clientesSection) {
+  const clienteElement = document.createElement('p');
+  clienteElement.innerText = `${nuevoCliente.nombre} ${nuevoCliente.apellido} (${nuevoCliente.empresa})`;
+  clientesSection.appendChild(clienteElement);
+}
+
+
+  }
+  
+});
+
+
   });
 
   //function cargarValores(){
-	//const nombre = document.querySelector("#nom")
+	
 
   
 	
