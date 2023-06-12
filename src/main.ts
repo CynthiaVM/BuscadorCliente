@@ -1,10 +1,20 @@
 
 import './style.css';
 import { iclientes } from './Clientes/InterfacesCliente';
+import { generarTablaUsuarios } from './usuarios/tabla';
+import { getUsuario } from './usuarios/usuario.Service';
+import { iUsuario } from './usuarios/usuario.Interfaces';
+
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <h1>Bienvenido</h1>
 `;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const divTabla = document.querySelector<HTMLDivElement>('#divTablaUsuarios')!;
+  const usuarios = await getUsuario();
+  generarTablaUsuarios(usuarios, divTabla);
+});
 
 const app = document.querySelector<HTMLDivElement>('#app');
 const home = document.querySelector<HTMLAnchorElement>('#home');
@@ -141,17 +151,17 @@ form?.addEventListener('submit', (event) => {
     const telefonoValue = telefonoInput.value;
     if (telefonoValue.length < 8 || telefonoValue.length > 18) {
       // El campo telefono no cumple con los requisitos
-      // Realiza la lógica de manejo de error o muestra un mensaje al usuario
+      // lógica de error o muestra un mensaje 
       return;
     }
 
     // Hace el envío del formulario
     const nombre = nombreInput.value;
     const apellido = apellidoInput.value;
-    const telefono = telefonoInput.valueAsNumber;
+    const telefono = telefonoInput.value;
     const email = emailInput.value;
     const empresa = empresaInput.value;
-    const cuit = cuitInput.valueAsNumber;
+    const cuit = cuitInput.value;
     const direccion = direccionInput.value;
     const localidad = localidadInput.value;
     const pais = paisInput.value;
@@ -172,6 +182,39 @@ const nuevoCliente: iclientes = {
 // aca se puede realizar alguna acción con el cliente, como enviarlo al servidor o mostrarlo en la consola
 console.log(nuevoCliente);
 // tambien se puede agregar el cliente a una lista de clientes cargados y mostrarla en la sección de clientes
+// Enviar el objeto `nuevoCliente` al servicio API utilizando la función `createUsuario`
+const crearUsuarioPromise = (usuario: iUsuario): Promise<unknown> => {
+  return new Promise((resolve, reject) => {
+    getUsuario(usuario)
+      .then((response: unknown) => {
+        resolve(response);
+      })
+      .catch((error: any) => {
+        reject(error);
+      });
+  });
+};
+
+const nuevoUsuario = {
+  nombre: 'Jose',
+  apellido: 'Gomez',
+  telefono: '43314514',
+  email: 'jose.gomez@gmail.com',
+  empresa: 'culis srl',
+  cuit:  '30709968971',
+  direccion: 'arata 1524',
+  localidad: 'caba',
+  pais: 'argentina',
+};
+
+crearUsuarioPromise(nuevoUsuario)
+  .then((response) => {
+    console.log('Usuario creado:', response);
+  })
+  .catch((error) => {
+    console.error('Error al crear usuarios:', error);
+  });
+
 
 // mostrar los clientes cargados en la sección de clientes
 const clientesSection = document.querySelector<HTMLDivElement>('#clientes-section');
