@@ -3,10 +3,10 @@ export interface iclientes{
     id?:string;
     nombre: string;
     apellido: string;
-    telefono: number;
+    telefono: string;
     email:string;
     empresa: string;
-    cuit :  number;
+    cuit :  string;
     direccion : string;
     localidad : string;
     pais : string;
